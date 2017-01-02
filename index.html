@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <title>Starter Template - Materialize</title>
+
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="css/editing.css" type="text/css" rel="stylesheet"/>
+</head>
+<body>
+    <nav class="blue" role="navigation">
+        <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Boolean functions Calculator</a>
+        </div>
+    </nav>
+    </br>
+    <!-- calculator UI -->
+    <div class="container calculator-panel">
+        <div class="calculator-panel card blue-text text-darken-3">
+            <!-- calculator display -->
+            <div id="display" class="display card">
+                <span id="input-line">A + B + C + D + D</span>
+            </div>
+
+            <!-- calculator keyboard -->
+            <div id="keyboard" class="keyboard">
+                <!-- litteral operands -->
+                <div class="line">
+                    <a id="A-operand-button" class="waves-effect waves-light blue darken-4 blue-text text-lighten-5 btn literal">A</a>
+                    <a id="B-operand-button" class="waves-effect waves-light blue darken-4 blue-text text-lighten-5 btn literal">B</a>
+                    <a id="C-operand-button" class="waves-effect waves-light blue darken-4 blue-text text-lighten-5 btn literal">C</a>
+                    <a id="D-operand-button" class="waves-effect waves-light blue darken-4 blue-text text-lighten-5 btn literal">D</a>
+                </div>
+                <!-- numeric operands -->
+                <div class="line">
+                    <a id="0-operand-button" class="waves-effect waves-light blue darken-2 blue-text text-lighten-5 btn numeric">0</a>
+                    <a id="1-operand-button" class="waves-effect waves-light blue darken-2 blue-text text-lighten-5 btn numeric">1</a>
+                </div>
+                <!-- basic operators -->
+                <div class="line">
+                    <a id="conjunction-button" class="waves-effect waves-blue blue lighten-5 blue-text text-darken-2 btn operator">&middot;</a>
+                    <a id="disjunction-button" class="waves-effect waves-blue blue lighten-5 blue-text text-darken-2 btn operator">+</a>
+                    <a id="negation-button" class="waves-effect waves-blue blue lighten-5 blue-text text-darken-2 btn operator">&not;</a>
+                </div>
+                <!-- additional operators -->
+                <div class="line">
+                    <a id="conclusive-disjunction-button" class="waves-effect waves-blue blue lighten-5 blue-text text-darken-2 btn operator">&oplus;</a>
+                    <a id="implication-button" class="waves-effect waves-blue blue lighten-5 blue-text text-darken-2 btn operator">&rArr;</a>
+                    <a id="equivalence-button" class="waves-effect waves-blue blue lighten-5 blue-text text-darken-2 btn operator">&hArr;</a>
+                </div>
+                <!-- last operators group -->
+                <div class="line">
+                    <!-- operators -->
+                    <div class="keyboard">
+                        <div class="line">
+                            <a id="pierce-arrow-button" class="waves-effect waves-blue blue lighten-5 blue-text text-darken-2 btn operator">&#8595</a>
+                            <a id="sheffer-stroke-button" class="waves-effect waves-blue blue lighten-5 blue-text text-darken-2 btn operator">|</a>
+                        </div>
+                        <div class="line">
+                            <a id="opening-bracket-button" class="waves-effect waves-light blue darken-1 blue-text text-lighten-5 btn operator">(</a>
+                            <a id="closing-bracket-button" class="waves-effect waves-light blue darken-1 blue-text text-lighten-5 btn operator">)</a>
+                        </div>
+                    </div>
+                    <!-- submit button -->
+                    <div class="line">
+                        <a id="submit-button" class="waves-effect waves-light blue darken-4 blue-text text-lighten-5 btn submit"><i class="material-icons">send</i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="js/materialize.js"></script>
+    <script src="js/init.js"></script>
+    <script src="js/clear.js"></script>
+
+    <script src="js/calculatorBehavior.js"></script>
+
+</body>
+</html>

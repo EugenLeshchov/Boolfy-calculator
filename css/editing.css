@@ -1,0 +1,98 @@
+.line {
+    display: flex;
+    justify-content: space-between;
+}
+
+.keyboard {
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+}
+
+.calculator-panel {
+    width: 460px;
+    padding: 10px;
+}
+
+.line .btn.literal {
+    height: 100px;
+    width: 25%;
+    margin: 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-style: italic;
+    font-size: 30px;
+}
+
+.line .btn.numeric {
+    height: 80px;
+    width: 50%;
+    margin: 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-style: italic;
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.line .btn.operator {
+    height: 120px;
+    width: 134px;
+    margin: 6px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: thin;
+    font-size: 70px;
+}
+
+.line .btn.submit {
+    height: 253px;
+    width: 134px;
+    margin: 6px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: thin;
+    font-size: 70px;
+}
+
+.waves-effect.waves-blue .waves-ripple {
+    background-color: rgba(21, 101, 196, 0.3)
+}
+
+#submit-button i{
+    font-size: 90px;
+}
+
+#sheffer-stroke-button {
+    font-size: 330%;
+}
+
+#display {
+    height: 100px;
+    margin: 5px;
+    margin-bottom: 7px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 8px;
+
+    font-size: 250%;
+    font-weight: 300;
+}
+
+#display #input-line {
+    direction: ltr;
+    display: inline-block;
+}
