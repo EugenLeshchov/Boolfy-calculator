@@ -14,6 +14,16 @@ app.get('/', (req, res) => {
     res.sendFile('/index.html');
 });
 
+app.post('/calculate', (req, res) => {
+    let expression = '';
+    req.on('data', (chunck) => {
+        expression += chunck.toString();
+    });
+    req.on('end', () => {
+        console.log(expression);
+    })
+});
+
 app.listen(8080, () => {
     console.log('Server is started on 8080 port');
 });

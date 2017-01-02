@@ -70,4 +70,28 @@ $(document).ready(() => {
                 break;
         }
     });
+
+    let submitButton = $('#submit-button');
+
+    // submit expression and send it to server
+    submitButton.on('click', (event) => {
+        let expression = inputLine.text();
+
+        // making ajax request
+        let calculate = fetch('/calculate', {
+            method: 'POST',
+            body: expression
+        });
+
+        // handling received results
+        calculate
+            .then(function(response) {
+                console.log(response.status);
+
+                return response.json();
+            })
+            .then(function(table) {
+
+            });
+    });
 });
