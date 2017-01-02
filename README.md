@@ -1,4 +1,4 @@
-# DM---Boolean-Functions-Calculator
+# DM-Boolean-Functions-Calculator
 Additional task for the exam
 
 Main goals: <br />
