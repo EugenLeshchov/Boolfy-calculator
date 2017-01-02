@@ -52,7 +52,7 @@ class ExpressionParser {
                 this.operands[character] = 0;
             }
         }
-
+sa
         // extract last containing operators
         while(this.operatorsStack.length) {
             this.finalExpression.push(this.operatorsStack.pop());
