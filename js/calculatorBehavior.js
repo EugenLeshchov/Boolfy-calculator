@@ -91,7 +91,39 @@ $(document).ready(() => {
                 return response.json();
             })
             .then(function(table) {
+                console.log(table);
+                let tableHead = $('#table-head');
 
+                // creating table headers
+                let headers = Object.keys(table[0].input).slice(2);
+
+                headers.forEach(function(header, index) {
+                    let th = document.createElement('th');
+                    th.innerHTML = header.toUpperCase();
+                    tableHead.append(th);
+                });
+
+                let resultTh = document.createElement('th');
+                resultTh.innerHTML = 'Result';
+                tableHead.append(resultTh);
+
+                // displaying results
+                table.forEach(function(data, index) {
+                    let tr = document.createElement('tr');
+
+                    headers.forEach(function(key, index) {
+                        let td = document.createElement('td');
+                        td.innerHTML = data.input[key];
+                        $(tr).append(td);
+                    });
+
+                    let resultTd = document.createElement('td');
+                    resultTd.innerHTML = data.result;
+
+                    $(tr).append(resultTd);
+
+                    $('#table-body').append(tr);
+                });
             });
     });
 });

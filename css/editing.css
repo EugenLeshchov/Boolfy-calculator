@@ -96,3 +96,7 @@
     direction: ltr;
     display: inline-block;
 }
+
+#logo {
+    text-align: center;
+}

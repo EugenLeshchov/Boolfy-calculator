@@ -3,7 +3,7 @@
  */
 let fs = require('fs');
 let express = require('express');
-// let path = require('path');
+let path = require('path');
 let BoolCalculator = require('./BoolCalculator').BoolCalculator;
 
 let app = express();
@@ -11,7 +11,7 @@ let app = express();
 app.use(express.static(__dirname));
 
 app.get('/', (req, res) => {
-    res.sendFile('/index.html');
+    res.sendFile('index.html');
 });
 
 app.post('/calculate', (req, res) => {
@@ -21,7 +21,14 @@ app.post('/calculate', (req, res) => {
     });
     req.on('end', () => {
         console.log(expression);
+        let boolCalculator = new BoolCalculator(expression);
+        boolCalculator.calculateAll();
+        res.send(JSON.stringify(boolCalculator.results));
     })
+});
+
+app.get('/test', (req, res) => {
+    res.sendFile(path.join(__dirname + '/test.html'));
 });
 
 app.listen(8080, () => {
