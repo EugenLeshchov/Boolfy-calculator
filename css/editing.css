@@ -12,6 +12,7 @@
 .calculator-panel {
     width: 460px;
     padding: 10px;
+    margin: auto;
 }
 
 .line .btn.literal {
@@ -97,6 +98,22 @@
     display: inline-block;
 }
 
+.results-table td, .results-table th {
+    width: 30px;
+}
+
+.results-table {
+    margin: auto;
+}
+
 #logo {
-    text-align: center;
+    position: relative;
+}
+
+#logo-container {
+    display: block;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
 }

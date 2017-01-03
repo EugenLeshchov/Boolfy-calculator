@@ -27,10 +27,6 @@ app.post('/calculate', (req, res) => {
     })
 });
 
-app.get('/test', (req, res) => {
-    res.sendFile(path.join(__dirname + '/test.html'));
-});
-
 app.listen(8080, () => {
     console.log('Server is started on 8080 port');
 });

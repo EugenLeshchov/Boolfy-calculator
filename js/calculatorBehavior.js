@@ -3,13 +3,14 @@
  */
 $(document).ready(() => {
     let inputLine = $('#input-line');
-    let expressionLength = 0;
 
+    // handle calculator button click
     $('a.literal, a.numeric, a.operator').on('click', (event) => {
         inputLine.html(inputLine.html() + event.target.textContent);
         inputLine.trigger($.Event('add', { length: inputLine.text().length }));
     });
 
+    // add characters because of keyboard typing
     $(document).on('keyup', (event) => {
         switch (event.which) {
             case 8:
@@ -28,6 +29,7 @@ $(document).ready(() => {
         inputLine.trigger($.Event('add', { length: inputLine.text().length }));
     });
 
+    // handle removing characters from expression string
     inputLine.on('cut', (event) => {
         switch (event.length) {
             case 11:
@@ -48,6 +50,7 @@ $(document).ready(() => {
         }
     });
 
+    // handle adding characters to expression string
     inputLine.on('add', (event) => {
         switch (event.length) {
             case 12:
@@ -71,10 +74,71 @@ $(document).ready(() => {
         }
     });
 
-    let submitButton = $('#submit-button');
+    // fill table head with headers
+    function createTableHead(table) {
+        // reset headers
+        let tableHead = $('#table-head');
+        tableHead.html('');
+
+        // creating table headers
+        let headers = Object.keys(table[0].input).slice(2);
+        let tr = document.createElement('tr');
+
+        let indexTh = document.createElement('th');
+        indexTh.innerHTML = '#';
+        tr.append(indexTh);
+
+        headers.forEach(function(header) {
+            let th = document.createElement('th');
+            th.innerHTML = header.toUpperCase();
+            tr.append(th);
+        });
+
+        let resultTh = document.createElement('th');
+        resultTh.innerHTML = 'Result';
+        tr.append(resultTh);
+        tableHead.append(tr);
+    }
+
+    // fill table body with value pairs
+    function createTableBody(table) {
+        // reset body containings
+        let tableBody = $('#table-body');
+        tableBody.html('');
+
+        // displaying results
+        let headers = Object.keys(table[0].input).slice(2);
+        let rowCount = 0;
+
+        table.forEach(function(data) {
+            let tr = document.createElement('tr');
+
+            let indexTd = document.createElement('td');
+            indexTd.innerHTML = rowCount++ + '.';
+            $(tr).append(indexTd);
+
+            headers.forEach(function(key) {
+                let td = document.createElement('td');
+                td.innerHTML = data.input[key];
+                $(tr).append(td);
+            });
+
+            let resultTd = document.createElement('td');
+            resultTd.innerHTML = data.result;
+
+            $(tr).append(resultTd);
+
+            tableBody.append(tr);
+        });
+    }
+
+    // toggle flip animation
+    function flip() {
+        document.querySelector(".flip-container").classList.toggle("flip");
+    }
 
     // submit expression and send it to server
-    submitButton.on('click', (event) => {
+    $('#submit-button').on('click', (event) => {
         let expression = inputLine.text();
 
         // making ajax request
@@ -92,38 +156,19 @@ $(document).ready(() => {
             })
             .then(function(table) {
                 console.log(table);
-                let tableHead = $('#table-head');
 
-                // creating table headers
-                let headers = Object.keys(table[0].input).slice(2);
+                flip();
 
-                headers.forEach(function(header, index) {
-                    let th = document.createElement('th');
-                    th.innerHTML = header.toUpperCase();
-                    tableHead.append(th);
-                });
+                createTableHead(table);
 
-                let resultTh = document.createElement('th');
-                resultTh.innerHTML = 'Result';
-                tableHead.append(resultTh);
+                createTableBody(table);
 
-                // displaying results
-                table.forEach(function(data, index) {
-                    let tr = document.createElement('tr');
-
-                    headers.forEach(function(key, index) {
-                        let td = document.createElement('td');
-                        td.innerHTML = data.input[key];
-                        $(tr).append(td);
-                    });
-
-                    let resultTd = document.createElement('td');
-                    resultTd.innerHTML = data.result;
-
-                    $(tr).append(resultTd);
-
-                    $('#table-body').append(tr);
-                });
+                $('.results-table').css('width', ((headers.length + 1) * 100) + 'px');
             });
     });
+
+    // handle results table click
+    $('.results-table').on('click', () => {
+        flip();
+    })
 });
