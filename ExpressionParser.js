@@ -57,6 +57,8 @@ class ExpressionParser {
         while(this.operatorsStack.length) {
             this.finalExpression.push(this.operatorsStack.pop());
         }
+
+        console.log('Postfix expression form:\n' + this.finalExpression.join(''));
     }
 
     static split(expression) {

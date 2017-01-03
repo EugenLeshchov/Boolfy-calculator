@@ -74,6 +74,8 @@ $(document).ready(() => {
         }
     });
 
+    let headers;
+
     // fill table head with headers
     function createTableHead(table) {
         // reset headers
@@ -81,7 +83,7 @@ $(document).ready(() => {
         tableHead.html('');
 
         // creating table headers
-        let headers = Object.keys(table[0].input).slice(2);
+        headers = Object.keys(table[0].input).slice(2);
         let tr = document.createElement('tr');
 
         let indexTh = document.createElement('th');
@@ -107,7 +109,7 @@ $(document).ready(() => {
         tableBody.html('');
 
         // displaying results
-        let headers = Object.keys(table[0].input).slice(2);
+        headers = Object.keys(table[0].input).slice(2);
         let rowCount = 0;
 
         table.forEach(function(data) {
