@@ -16,8 +16,9 @@ $(document).ready(() => {
             case '\u21D2': // implication
                 return 'operator';
             case '(':
+                return 'opening bracket';
             case ')':
-                return 'bracket';
+                return 'closing bracket';
             default:
                 return 'operand';
         }
@@ -101,19 +102,78 @@ $(document).ready(() => {
     // check if input is correct
     inputLine.on('character', (event) => {
         switch (whichCharacter(event.character)) {
-            case 'operand':
+            case 'operator':
                 if (event.character == '\u00AC') { //negation
-                    if (inputLine.text().length != 0) {
-                        switch (inputLine.text()[inputLine.text().length - 1]) {
-                            case '(':
-                            case '':
+                    if (inputLine.text().length != 1) {
+                        switch (whichCharacter(inputLine.text()[inputLine.text().length - 2])) {
+                            case 'opening bracket':
+                            case 'operator':
+                                return;
+                            default:
+                                inputLine.text(inputLine.text().slice(0, -1));
+                                inputLine.trigger($.Event('cut', { length: inputLine.text().length }));
+                                return;
                         }
                     }
+                    return;
                 } else {
-
+                    if (inputLine.text().length != 1) { //other operators
+                        switch (whichCharacter(inputLine.text()[inputLine.text().length - 2])) {
+                            case 'closing bracket':
+                            case 'operand':
+                                return;
+                            default:
+                                inputLine.text(inputLine.text().slice(0, -1));
+                                inputLine.trigger($.Event('cut', { length: inputLine.text().length }));
+                                return;
+                        }
+                    }
+                    inputLine.text(inputLine.text().slice(0, -1));
+                    inputLine.trigger($.Event('cut', { length: inputLine.text().length }));
+                    return;
                 }
-            case 'bracket':
-            case 'operator':
+            case 'opening bracket':
+                if (inputLine.text().length != 1) {
+                    switch (whichCharacter(inputLine.text()[inputLine.text().length - 2])) {
+                        case 'operator':
+                        case 'opening bracket':
+                        case 'closing bracket':
+                            return;
+                        default:
+                            inputLine.text(inputLine.text().slice(0, -1));
+                            inputLine.trigger($.Event('cut', { length: inputLine.text().length }));
+                            return;
+                    }
+                }
+                return;
+            case 'closing bracket':
+                if (inputLine.text().length != 1) {
+                    switch (whichCharacter(inputLine.text()[inputLine.text().length - 2])) {
+                        case 'operand':
+                        case 'closing bracket':
+                            return;
+                        default:
+                            inputLine.text(inputLine.text().slice(0, -1));
+                            inputLine.trigger($.Event('cut', { length: inputLine.text().length }));
+                            return;
+                    }
+                }
+                inputLine.text(inputLine.text().slice(0, -1));
+                inputLine.trigger($.Event('cut', { length: inputLine.text().length }));
+                return;
+            case 'operand':
+                if (inputLine.text().length != 1) {
+                    switch (whichCharacter(inputLine.text()[inputLine.text().length - 2])) {
+                        case 'operator':
+                        case 'opening bracket':
+                            return;
+                        default:
+                            inputLine.text(inputLine.text().slice(0, -1));
+                            inputLine.trigger($.Event('cut', { length: inputLine.text().length }));
+                            return;
+                    }
+                }
+                return;
         }
     });
 
