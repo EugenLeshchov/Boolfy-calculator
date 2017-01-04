@@ -24,7 +24,10 @@ class ExpressionParser {
                     operator = this.operatorsStack.pop();
 
                     // extract new operations until get one with primary priority
-                    while (ExpressionParser.priority(operator) <= priority && ExpressionParser.priority(operator) != null && priority != 5) {
+                    while (((ExpressionParser.priority(operator) <= priority && priority != 1)
+                                || (ExpressionParser.priority(operator) < priority && priority == 1))
+                                && ExpressionParser.priority(operator) != null
+                                && priority != 5) {
                         this.finalExpression.push(operator);
                         operator = this.operatorsStack.pop();
                     }

@@ -4,10 +4,32 @@
 $(document).ready(() => {
     let inputLine = $('#input-line');
 
+    function whichCharacter(char) {
+        switch (char) {
+            case '\u00AC': // negation
+            case '\u00B7': // conjunction
+            case '\u007C': // Sheffer stroke
+            case '\u002B': // disjunction
+            case '\u2193': // Pierce arrow
+            case '\u2295': // conclusive disjunction
+            case '\u21D4': // equivalence
+            case '\u21D2': // implication
+                return 'operator';
+            case '(':
+            case ')':
+                return 'bracket';
+            default:
+                return 'operand';
+        }
+    }
+
     // handle calculator button click
     $('a.literal, a.numeric, a.operator').on('click', (event) => {
         inputLine.html(inputLine.html() + event.target.textContent);
+
         inputLine.trigger($.Event('add', { length: inputLine.text().length }));
+
+        inputLine.trigger($.Event('character', { character: event.target.textContent }));
     });
 
     // add characters because of keyboard typing
@@ -25,6 +47,8 @@ $(document).ready(() => {
     }).on('keypress', (event) => {
         if (event.charCode != 32) {
             inputLine.html(inputLine.html() + String.fromCharCode(event.charCode));
+
+            inputLine.trigger($.Event('character', { character: String.fromCharCode(event.charCode) } ))
         }
         inputLine.trigger($.Event('add', { length: inputLine.text().length }));
     });
@@ -71,6 +95,25 @@ $(document).ready(() => {
             case 30:
                 inputLine.text(inputLine.text().slice(0, -1));
                 break;
+        }
+    });
+
+    // check if input is correct
+    inputLine.on('character', (event) => {
+        switch (whichCharacter(event.character)) {
+            case 'operand':
+                if (event.character == '\u00AC') { //negation
+                    if (inputLine.text().length != 0) {
+                        switch (inputLine.text()[inputLine.text().length - 1]) {
+                            case '(':
+                            case '':
+                        }
+                    }
+                } else {
+
+                }
+            case 'bracket':
+            case 'operator':
         }
     });
 
