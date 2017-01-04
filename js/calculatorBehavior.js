@@ -161,6 +161,8 @@ $(document).ready(() => {
 
                 flip();
 
+                $('#expression').text(inputLine.text());
+
                 createTableHead(table);
 
                 createTableBody(table);
