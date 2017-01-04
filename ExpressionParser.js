@@ -10,6 +10,7 @@ class ExpressionParser {
         this.operands = {};
     }
 
+    // convert infix form of boolean expression to postfix
     parse() {
         while (this.initialExpression.length) {
             let character = this.initialExpression.shift();
@@ -78,6 +79,7 @@ class ExpressionParser {
             });
     }
 
+    // determine priority of certain operator
     static priority(operator) {
         switch (operator) {
             case '\u00AC': // negation
@@ -100,6 +102,7 @@ class ExpressionParser {
         }
     }
 
+    // determine whether a character is an operator
     static isOperator(character) {
         let priority = ExpressionParser.priority(character);
         if (priority != 5 && priority != null) return true;
@@ -107,4 +110,5 @@ class ExpressionParser {
     }
 }
 
+// export module
 module.exports.ExpressionParser = ExpressionParser;

@@ -20,7 +20,7 @@ app.post('/calculate', (req, res) => {
         expression += chunck.toString();
     });
     req.on('end', () => {
-        console.log(expression);
+        console.log('Infix expression form:\n', expression);
         let boolCalculator = new BoolCalculator(expression);
         boolCalculator.calculateAll();
         res.send(JSON.stringify(boolCalculator.results));

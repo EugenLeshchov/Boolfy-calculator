@@ -18,8 +18,8 @@ class BoolCalculator extends ExpressionParser {
         this.results = [];
     }
 
-    calculateAll (operandIndex) {
-        if (operandIndex == undefined) operandIndex = 0;
+    // generate sets of values for computing and do so
+    calculateAll (operandIndex = 0) {
         if (operandIndex < this.operandsKeys.length) {
             [0, 1].forEach(function(value) {
                 this.operands[this.operandsKeys[operandIndex]] = value;
@@ -33,14 +33,18 @@ class BoolCalculator extends ExpressionParser {
         }
     }
 
+    // insert values and calculate results
     calculate() {
         let finalExpression = this.finalExpression.slice();
         let operatorIndex = 0;
+
         while (finalExpression.length > 1) {
             let temp;
             operatorIndex = (temp = finalExpression.slice(operatorIndex + 1)).findIndex(BoolCalculator.isOperator) + operatorIndex + 1;
+
             if (operatorIndex != -1) {
                 let operatorFunction = BoolCalculator.inspectOperator(finalExpression[operatorIndex]);
+
                 if (operatorFunction == BoolCalculator.negation && operatorIndex >= 1) {
                     let arg = finalExpression.splice(operatorIndex - 1, 2)[0];
                     finalExpression.splice(operatorIndex - 1, 0, operatorFunction(this.operands[arg]));
@@ -50,7 +54,7 @@ class BoolCalculator extends ExpressionParser {
                 } else {
                     continue;
                 }
-                    operatorIndex = 0;
+                operatorIndex = 0;
             } else {
                 return null;
             }
@@ -58,6 +62,7 @@ class BoolCalculator extends ExpressionParser {
         return finalExpression[0];
     }
 
+    // determine which operation must be evoked
     static inspectOperator(operator) {
         switch (operator) {
             case '\u00AC': // negation
@@ -79,11 +84,6 @@ class BoolCalculator extends ExpressionParser {
             default:
                 return null;
         }
-    }
-
-    static isOperator(character) {
-        if (BoolCalculator.inspectOperator(character) != null) return true;
-        return false;
     }
 
     // Boolean ariphmetic functions

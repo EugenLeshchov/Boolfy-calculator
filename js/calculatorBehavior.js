@@ -2,11 +2,18 @@
  * Created by eugen on 1/2/17.
  */
 $(document).ready(() => {
-    let inputLine = $('#input-line');
+    // DOM element which contain input boolean expression
+    let $inputLine = $('#input-line');
 
+    $inputLine.clip = function(length = 1) {
+        this.text(this.text().slice(0, -length));
+    };
+
+    // determine type of certain character
     function whichCharacter(char) {
         switch (char) {
             case '\u00AC': // negation
+                return 'negation';
             case '\u00B7': // conjunction
             case '\u007C': // Sheffer stroke
             case '\u002B': // disjunction
@@ -26,151 +33,161 @@ $(document).ready(() => {
 
     // handle calculator button click
     $('a.literal, a.numeric, a.operator').on('click', (event) => {
-        inputLine.html(inputLine.html() + event.target.textContent);
+        try {
+            $inputLine.trigger($.Event('character', {character: event.target.textContent}));
 
-        inputLine.trigger($.Event('add', { length: inputLine.text().length }));
+            $inputLine.html($inputLine.html() + event.target.textContent);
 
-        inputLine.trigger($.Event('character', { character: event.target.textContent }));
+            $inputLine.trigger($.Event('add', {length: $inputLine.text().length}));
+        } catch (error) {
+            console.log('Error was occured: ' + error.message);
+        }
     });
 
     // add characters because of keyboard typing
     $(document).on('keyup', (event) => {
         switch (event.which) {
             case 8:
-                inputLine.text(inputLine.text().slice(0, -1));
-                inputLine.trigger($.Event('cut', { length: inputLine.text().length }));
+                $inputLine.clip();
+                $inputLine.trigger($.Event('cut', { length: $inputLine.text().length }));
                 break;
             case 32:
-                inputLine.html(inputLine.html() + '&nbsp;');
-                inputLine.trigger($.Event('add', { length: inputLine.text().length }));
+                $inputLine.html($inputLine.html() + '&nbsp;');
+                $inputLine.trigger($.Event('add', { length: $inputLine.text().length }));
                 break;
         }
     }).on('keypress', (event) => {
-        if (event.charCode != 32) {
-            inputLine.html(inputLine.html() + String.fromCharCode(event.charCode));
+        try {
+            if (event.charCode != 32) {
+                let newCharacter = String.fromCharCode(event.charCode);
 
-            inputLine.trigger($.Event('character', { character: String.fromCharCode(event.charCode) } ))
+                $inputLine.trigger($.Event('character', { character: newCharacter }));
+
+                $inputLine.html($inputLine.html() + newCharacter);
+            }
+            $inputLine.trigger($.Event('add', { length: $inputLine.text().length }));
+        } catch (error) {
+            console.log('Error was occured: ' + error.message);
         }
-        inputLine.trigger($.Event('add', { length: inputLine.text().length }));
     });
 
     // handle removing characters from expression string
-    inputLine.on('cut', (event) => {
+    $inputLine.on('cut', (event) => {
         switch (event.length) {
             case 11:
-                inputLine.css('font-size', '100%');
+                $inputLine.css('font-size', '100%');
                 break;
             case 15:
-                inputLine.css('font-size', '85%');
+                $inputLine.css('font-size', '85%');
                 break;
             case 18:
-                inputLine.css('font-size', '70%');
+                $inputLine.css('font-size', '70%');
                 break;
             case 22:
-                inputLine.css('font-size', '60%');
+                $inputLine.css('font-size', '60%');
                 break;
             case 26:
-                inputLine.css('font-size', '50%');
+                $inputLine.css('font-size', '50%');
                 break;
         }
     });
 
     // handle adding characters to expression string
-    inputLine.on('add', (event) => {
+    $inputLine.on('add', (event) => {
         switch (event.length) {
             case 12:
-                inputLine.css('font-size', '85%');
+                $inputLine.css('font-size', '85%');
                 break;
             case 16:
-                inputLine.css('font-size', '70%');
+                $inputLine.css('font-size', '70%');
                 break;
             case 19:
-                inputLine.css('font-size', '60%');
+                $inputLine.css('font-size', '60%');
                 break;
             case 23:
-                inputLine.css('font-size', '50%');
+                $inputLine.css('font-size', '50%');
                 break;
             case 27:
-                inputLine.css('font-size', '45%');
+                $inputLine.css('font-size', '45%');
                 break;
             case 30:
-                inputLine.text(inputLine.text().slice(0, -1));
+                $inputLine.text($inputLine.text().slice(0, -1));
                 break;
         }
     });
 
+    // invalid input shake animation
+    function shake(component = '#display') {
+        $(component).addClass('invalid');
+        setTimeout(function() {
+            $(component).removeClass('invalid');
+        }, 500);
+    }
+
     // check if input is correct
-    inputLine.on('character', (event) => {
+    $inputLine.on('character', (event) => {
         switch (whichCharacter(event.character)) {
-            case 'operator':
-                if (event.character == '\u00AC') { //negation
-                    if (inputLine.text().length != 1) {
-                        switch (whichCharacter(inputLine.text()[inputLine.text().length - 2])) {
-                            case 'opening bracket':
-                            case 'operator':
-                                return;
-                            default:
-                                inputLine.text(inputLine.text().slice(0, -1));
-                                inputLine.trigger($.Event('cut', { length: inputLine.text().length }));
-                                return;
-                        }
-                    }
-                    return;
-                } else {
-                    if (inputLine.text().length != 1) { //other operators
-                        switch (whichCharacter(inputLine.text()[inputLine.text().length - 2])) {
-                            case 'closing bracket':
-                            case 'operand':
-                                return;
-                            default:
-                                inputLine.text(inputLine.text().slice(0, -1));
-                                inputLine.trigger($.Event('cut', { length: inputLine.text().length }));
-                                return;
-                        }
-                    }
-                    inputLine.text(inputLine.text().slice(0, -1));
-                    inputLine.trigger($.Event('cut', { length: inputLine.text().length }));
-                    return;
-                }
-            case 'opening bracket':
-                if (inputLine.text().length != 1) {
-                    switch (whichCharacter(inputLine.text()[inputLine.text().length - 2])) {
+            case 'negation':
+                if ($inputLine.text().length != 0) {
+                    switch (whichCharacter($inputLine.text().slice(-1))) {
+                        case 'opening bracket':
                         case 'operator':
+                        case 'negation':
+                            return;
+                        default:
+                            shake();
+                            throw new Error('unallowed to use negation here');
+                    }
+                }
+                return;
+
+            case 'operator':
+                if ($inputLine.text().length != 0) { //other operators
+                    switch (whichCharacter($inputLine.text().slice(-1))) {
+                        case 'closing bracket':
+                        case 'operand':
+                            return;
+                    }
+                }
+                shake();
+                throw new Error('unallowed to use operator here');
+
+            case 'opening bracket':
+                if ($inputLine.text().length != 0) {
+                    switch (whichCharacter($inputLine.text().slice(-1))) {
+                        case 'operator':
+                        case 'negation':
                         case 'opening bracket':
                         case 'closing bracket':
                             return;
                         default:
-                            inputLine.text(inputLine.text().slice(0, -1));
-                            inputLine.trigger($.Event('cut', { length: inputLine.text().length }));
-                            return;
+                            shake();
+                            throw new Error('unallowed to open bracket here');
                     }
                 }
                 return;
+
             case 'closing bracket':
-                if (inputLine.text().length != 1) {
-                    switch (whichCharacter(inputLine.text()[inputLine.text().length - 2])) {
+                if ($inputLine.text().length != 0) {
+                    switch (whichCharacter($inputLine.text().slice(-1))) {
                         case 'operand':
                         case 'closing bracket':
                             return;
-                        default:
-                            inputLine.text(inputLine.text().slice(0, -1));
-                            inputLine.trigger($.Event('cut', { length: inputLine.text().length }));
-                            return;
                     }
                 }
-                inputLine.text(inputLine.text().slice(0, -1));
-                inputLine.trigger($.Event('cut', { length: inputLine.text().length }));
-                return;
+                shake();
+                throw new Error('unallowed to close bracket here');
+
             case 'operand':
-                if (inputLine.text().length != 1) {
-                    switch (whichCharacter(inputLine.text()[inputLine.text().length - 2])) {
+                if ($inputLine.text().length != 0) {
+                    switch (whichCharacter($inputLine.text().slice(-1))) {
                         case 'operator':
+                        case 'negation':
                         case 'opening bracket':
                             return;
                         default:
-                            inputLine.text(inputLine.text().slice(0, -1));
-                            inputLine.trigger($.Event('cut', { length: inputLine.text().length }));
-                            return;
+                            shake();
+                            throw new Error('unallowed to use operand here')
                     }
                 }
                 return;
@@ -244,7 +261,7 @@ $(document).ready(() => {
 
     // submit expression and send it to server
     $('#submit-button').on('click', (event) => {
-        let expression = inputLine.text();
+        let expression = $inputLine.text();
 
         // making ajax request
         let calculate = fetch('/calculate', {
@@ -264,7 +281,7 @@ $(document).ready(() => {
 
                 flip();
 
-                $('#expression').text(inputLine.text());
+                $('#expression').text($inputLine.text());
 
                 createTableHead(table);
 
