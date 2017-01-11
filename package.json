@@ -1,0 +1,9 @@
+{
+  "name": "Boolfy calculator",
+  "description": "Minimalistic boolean functions calculator",
+  "version": "0.0.1",
+  "author": "Eugen Leshchov <EugenLeshchov@gmail.com>",
+  "dependencies": {
+    "express": "~3.0.0"
+  }
+}

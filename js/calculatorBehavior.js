@@ -71,6 +71,13 @@ $(document).ready(() => {
         }
     });
 
+    // remove last character from input(BACKSPACE equivalent)
+    $('#display').on('click', function() {
+        $inputLine.clip();
+
+        $inputLine.trigger($.Event('cut', { length: $inputLine.text().length }));
+    });
+
     // handle removing characters from expression string
     $inputLine.on('cut', (event) => {
         switch (event.length) {
