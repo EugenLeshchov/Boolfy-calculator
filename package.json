@@ -1,6 +1,9 @@
 {
-  "name": "Boolfy calculator",
+  "name": "Boolfy-calculator",
   "description": "Minimalistic boolean functions calculator",
+  "scripts": {
+    "run": "node server.js"
+  },
   "version": "0.0.1",
   "author": "Eugen Leshchov <EugenLeshchov@gmail.com>",
   "dependencies": {
