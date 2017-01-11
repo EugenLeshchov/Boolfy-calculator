@@ -43,3 +43,5 @@
    ```
 
 ## Руководство пользователя
+   ![Alt text](/../screenshots/path/to/boolfy-mainpage-edited.png?raw=true "main page")
+   ![Alt text](/../screenshots/path/to/boolfy-results-edited.png?raw=true "results table")
