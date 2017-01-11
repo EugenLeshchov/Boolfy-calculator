@@ -43,5 +43,5 @@
    ```
 
 ## Руководство пользователя
-   ![Alt text](/../screenshots/path/to/boolfy-mainpage-edited.png?raw=true "main page")
-   ![Alt text](/../screenshots/path/to/boolfy-results-edited.png?raw=true "results table")
+   ![Screenshot](https://github.com/EugenLeshchov/Boolfy-calculator/blob/screenshots/screenshots/boolfy-mainpage-edited.png "main page")
+   ![Screenshot](/../screenshots/path/to/boolfy-results-edited.png?raw=true "results table")
